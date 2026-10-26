@@ -7,6 +7,8 @@ try{Object.assign(M,await import(FB+"firebase-ai.js"))}catch(e){console.warn("fi
 try{Object.assign(M,await import(FB+"firebase-app-check.js"))}catch(e){console.warn("app-check failed to load",e)}
 const {initializeApp,getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,getAI,getGenerativeModel,GoogleAIBackend,initializeAppCheck,ReCaptchaV3Provider,getFirestore,collection,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,onSnapshot,query,orderBy,limitToLast,serverTimestamp}=M;
 window.__assistantReady=true;
+const pill=document.getElementById('authPill');
+const setPill=(u,txt)=>{if(!pill)return;pill.classList.toggle('on',!!u);pill.querySelector('span').textContent=txt||(u?'Signed in as '+(u.displayName||u.email):'Not signed in');pill.title=u?(u.email||''):'Open the Chat tab to sign in'};
 // Firebase chat: Google sign-in, role-based permissions, group room, direct messages.
 
 // 1) Paste your Firebase web app config here (Project settings > Your apps).
@@ -48,8 +50,10 @@ const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=nu
 const note=(msg,btn)=>{root.innerHTML='';const d=el('div','rc rc-note');d.append(el('p',null,msg));if(btn){const b=el('button',null,btn[0]);b.onclick=btn[1];d.append(b)}root.append(d)};
 
 if(loadErr){
+  setPill(null,"Sign-in unavailable");
   console.error(loadErr);note("Couldn't load Firebase ("+(loadErr.message||loadErr)+"). Open the site over http(s), not as a local file, and check the browser console.");
 }else if(FIREBASE_CONFIG.apiKey==="YOUR_API_KEY"){
+  setPill(null,"Sign-in not set up");
   note("Chat isn't set up yet. Add your Firebase config to chat.js (see README).");
 }else{
   const app=initializeApp(FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app);
@@ -61,6 +65,7 @@ if(loadErr){
   const login=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>note("Sign-in failed: "+e.code,["Try again",login]));
 
   onAuthStateChanged(auth,async u=>{
+    setPill(u);
     unsubMsgs&&unsubMsgs();unsubUsers&&unsubUsers();
     if(!u){me=null;return note("Sign in with Google to join the Modfest chat.",["Sign in with Google",login])}
     try{

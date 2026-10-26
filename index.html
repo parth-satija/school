@@ -52,6 +52,12 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:60px}
 .topnav button:hover{color:var(--text)}
 .topnav button[aria-selected=true]{background:var(--maroon);color:#fff}
 .topnav button:focus-visible{outline:2px solid var(--maroon-hi);outline-offset:2px}
+.auth-pill{flex:none;margin-left:auto;display:flex;align-items:center;gap:8px;max-width:220px;text-decoration:none;color:var(--muted);font:600 .85rem Figtree,sans-serif;padding:9px 14px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+.auth-pill span{overflow:hidden;text-overflow:ellipsis}
+.auth-pill i{flex:none;width:9px;height:9px;border-radius:50%;background:#6b5b59}
+.auth-pill.on{color:var(--text);border-color:#2f6b3f}
+.auth-pill.on i{background:#3ddc84;box-shadow:0 0 8px #3ddc84}
+.auth-pill:focus-visible{outline:2px solid var(--maroon-hi);outline-offset:2px}
 .panel[hidden]{display:none}
 .tabs{top:62px}
 html{scroll-padding-top:150px}
@@ -93,6 +99,7 @@ html{scroll-padding-top:150px}
   <button role="tab" data-tab="leadership" aria-selected="false">Leadership</button>
   <button role="tab" data-tab="council" aria-selected="false">Student Council</button>
   <button role="tab" data-tab="chat" aria-selected="false">Chat</button>
+  <a class="auth-pill" id="authPill" href="#chat" title="Account status"><i></i><span>Not signed in</span></a>
 </div></div>
 <main class="wrap">
 <section class="panel" id="p-modfest">
