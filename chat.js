@@ -1,10 +1,20 @@
 // @ts-nocheck
 // Firebase loads dynamically so a failure shows a message instead of silently killing the page.
-const FB="https://www.gstatic.com/firebasejs/11.10.0/";
+document.getElementById('chatApp').innerHTML='<p class="note">Loading chat…</p>';
+const VERSIONS=["11.10.0","11.6.0","10.14.1"]; // tries newest first, falls back if a version can't be loaded
+const withTimeout=(p,ms,what)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error("timed out loading "+what)),ms))]);
 let loadErr=null,M={};
-try{const [a,au,fs]=await Promise.all([import(FB+"firebase-app.js"),import(FB+"firebase-auth.js"),import(FB+"firebase-firestore.js")]);Object.assign(M,a,au,fs)}catch(e){loadErr=e}
-try{Object.assign(M,await import(FB+"firebase-ai.js"))}catch(e){console.warn("firebase-ai failed to load",e)}
-try{Object.assign(M,await import(FB+"firebase-app-check.js"))}catch(e){console.warn("app-check failed to load",e)}
+for(const v of VERSIONS){
+  const FB="https://www.gstatic.com/firebasejs/"+v+"/";
+  try{
+    const mods=await withTimeout(Promise.all(["firebase-app.js","firebase-auth.js","firebase-firestore.js"].map(f=>import(FB+f))),12000,"Firebase "+v);
+    M={};mods.forEach(m=>Object.assign(M,m));loadErr=null;
+    for(const f of ["firebase-ai.js","firebase-app-check.js"]){
+      try{Object.assign(M,await withTimeout(import(FB+f),8000,f))}catch(e){console.warn(f+" unavailable in "+v,e)}
+    }
+    console.info("Firebase SDK "+v+" loaded");break;
+  }catch(e){loadErr=e;console.warn("Firebase "+v+" failed",e)}
+}
 const {initializeApp,getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,getAI,getGenerativeModel,GoogleAIBackend,initializeAppCheck,ReCaptchaV3Provider,getFirestore,collection,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,onSnapshot,query,orderBy,limitToLast,serverTimestamp}=M;
 window.__assistantReady=true;
 const pill=document.getElementById('authPill');
