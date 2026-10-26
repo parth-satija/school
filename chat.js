@@ -28,6 +28,9 @@ const FIREBASE_CONFIG={apiKey:"AIzaSyDyOxoqlrqLverNeZXYqwrL7V1rhe9iJe4",authDoma
 const CHAT_MODEL="gemini-3.1-flash-lite";
 // 3) Recommended: reCAPTCHA v3 site key for Firebase App Check (Firebase console > App Check). Leave "" to skip.
 const APPCHECK_SITE_KEY="";
+// Firestore database ID. The console's standard database is "(default)" (with parentheses).
+// Yours was created as "default" (no parentheses), which is a separate named database.
+const FIRESTORE_DB_ID="default";
 let AI=null;
 
 const css=`
@@ -66,7 +69,7 @@ if(loadErr){
   setPill(null,"Sign-in not set up");
   note("Chat isn't set up yet. Add your Firebase config to chat.js (see README).");
 }else{
-  const app=initializeApp(FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app);
+  const app=initializeApp(FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app,FIRESTORE_DB_ID);
   if(APPCHECK_SITE_KEY&&initializeAppCheck)initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APPCHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
   if(getAI)AI=getAI(app,{backend:new GoogleAIBackend()});
   let me=null,users={},target='room',unsubMsgs=null,unsubUsers=null;
