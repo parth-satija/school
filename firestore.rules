@@ -5,25 +5,60 @@ service cloud.firestore {
     function signedIn() { return request.auth != null && exists(/databases/$(db)/documents/users/$(request.auth.uid)); }
     function ok() { return signedIn() && user(request.auth.uid).role != 'blocked'; }
     function isAdmin() { return ok() && user(request.auth.uid).role == 'admin'; }
+    // Admins are always approved. Everyone else needs an admin to set approved == true on their user doc.
+    function approved() { return ok() && (user(request.auth.uid).role == 'admin' || user(request.auth.uid).get('approved', false) == true); }
     function validText() { return request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000; }
+    function validGroupName() { return request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 40; }
+    function validMembers() { return request.resource.data.members is list && request.resource.data.members.size() <= 1000; }
+    function inGroup(g) { return isAdmin() || (approved() && request.auth.uid in get(/databases/$(db)/documents/groups/$(g)).data.members); }
 
     match /users/{u} {
       allow read: if request.auth != null;
-      allow create: if request.auth.uid == u && request.resource.data.role == 'student';
-      // Users can edit their profile but never their own role. Set staff/admin roles in the Firebase console.
+      // New accounts always start as an unapproved student.
+      allow create: if request.auth.uid == u && request.resource.data.role == 'student' && request.resource.data.approved == false;
+      // Users can edit their profile but never their own role or approval. Set staff/admin roles in the Firebase console.
       allow update: if request.auth.uid == u && request.resource.data.role == resource.data.role
+        && request.resource.data.get('approved', false) == resource.data.get('approved', false)
         && (!('title' in request.resource.data)
             || (request.resource.data.title is string && request.resource.data.title.size() <= 40));
+      // Admins can approve or revoke anyone (and nothing else about their profile).
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['approved'])
+        && request.resource.data.approved is bool;
     }
 
-    // Group room: any signed-in, non-blocked user can read and post. Admins can delete.
+    // Main group room: approved users (and admins) can read and post. Admins can delete.
     match /room/{m} {
-      allow read: if ok();
-      allow create: if ok() && validText()
+      allow read: if approved();
+      allow create: if approved() && validText()
         && request.resource.data.keys().hasOnly(['from','name','text','createdAt'])
         && request.resource.data.from == request.auth.uid
         && request.resource.data.createdAt == request.time;
       allow delete: if isAdmin();
+    }
+
+    // Admin-created groups. Only admins can create, edit or delete them.
+    // Members (must also be approved) can see the group; admins can see all groups.
+    match /groups/{g} {
+      allow read: if isAdmin() || (approved() && request.auth.uid in resource.data.members);
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly(['name','members','createdBy','createdAt'])
+        && validGroupName() && validMembers()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','members'])
+        && validGroupName() && validMembers();
+      allow delete: if isAdmin();
+
+      match /messages/{m} {
+        allow read: if inGroup(g);
+        allow create: if inGroup(g) && validText()
+          && request.resource.data.keys().hasOnly(['from','name','text','createdAt'])
+          && request.resource.data.from == request.auth.uid
+          && request.resource.data.createdAt == request.time;
+        allow delete: if isAdmin();
+      }
     }
 
     // Direct messages: chat id is the two user ids, sorted and joined with "_".
