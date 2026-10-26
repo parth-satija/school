@@ -85,7 +85,7 @@ if(loadErr){
       me={uid:u.uid,...(await getDoc(ref)).data()};
       unsubUsers=onSnapshot(collection(db,'users'),qs=>{users={};qs.forEach(d=>users[d.id]={uid:d.id,...d.data()});me={...me,...users[me.uid]};renderChips()});
       build();open('room');
-    }catch(e){note("Couldn't load chat ("+e.code+"). Check the Firestore rules in README.",["Sign out",()=>signOut(auth)])}
+    }catch(e){note(e.code==='unavailable'?"Signed in, but couldn't reach the Firestore database. Create it in the Firebase console (Build > Firestore Database > Create database) and make sure no ad blocker or network filter blocks firestore.googleapis.com.":e.code==='permission-denied'?"Signed in, but Firestore refused access. Publish the rules from firestore.rules (Firestore > Rules).":"Couldn't load chat ("+(e.code||e.message)+").",["Sign out",()=>signOut(auth)])}
   });
 
   let chips,box,input,err,tinp;
