@@ -208,41 +208,6 @@ document.querySelectorAll('[data-csv]').forEach(async box=>{
     box.innerHTML=`<p class="msg">Couldn't load ${file}. Make sure it sits next to index.html in the repo. If you opened this file directly from your computer, use GitHub Pages or a local server (e.g. <code>python -m http.server</code>) instead.</p>`;
   }
 });
-
-// ---- Chatbot (Gemini) ----
-// WARNING: a key placed here is visible to anyone who views the page source.
-// Restrict it to your site's domain in Google AI Studio / Cloud Console and set a quota.
-const CHAT_KEY="AQ.Ab8RN6K5tlNegvyIPM5Egi0sd5B1Hug6C4p2t4HbXjJkMXGqPQ";
-const CHAT_MODEL="gemini-3.1-flash-lite";
-const chatEl=document.getElementById('chat'),msgs=document.getElementById('msgs'),chatIn=document.getElementById('chatIn'),chatSend=document.getElementById('chatSend');
-const chatHistory=[];
-document.getElementById('chatFab').onclick=()=>{chatEl.hidden=!chatEl.hidden;if(!chatEl.hidden)chatIn.focus()};
-document.getElementById('chatClose').onclick=()=>chatEl.hidden=true;
-function addMsg(t,who){const d=document.createElement('div');d.className='m '+who;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
-function context(){
-  const days=[...document.querySelectorAll('section.day')].map(sec=>sec.querySelector('h2').textContent+':\n'+
-    [...sec.querySelectorAll('.card')].map(c=>'Act '+c.querySelector('.num').textContent+' - '+c.querySelector('.title').textContent+' (Faculty: '+c.querySelector('.fac b').textContent+')').join('\n')).join('\n\n');
-  const ppl=Object.values(PEOPLE).flat().map(p=>p.role+': '+p.name).join('\n');
-  return "You are the friendly assistant for Modfest 2026 at Modern School. Answer briefly and only using the information below; if you don't know, say so and suggest asking the school.\n\nSCHEDULE\n"+days+"\n\nPEOPLE\n"+ppl;
-}
-document.getElementById('chatForm').onsubmit=async e=>{
-  e.preventDefault();
-  const q=chatIn.value.trim();if(!q)return;
-  chatIn.value='';chatSend.disabled=true;addMsg(q,'me');
-  chatHistory.push({role:'user',parts:[{text:q}]});
-  const wait=addMsg('Thinking…','bot');
-  try{
-    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+CHAT_MODEL+':generateContent',{method:'POST',
-      headers:{'Content-Type':'application/json','x-goog-api-key':CHAT_KEY},
-      body:JSON.stringify({systemInstruction:{parts:[{text:context()}]},contents:chatHistory})});
-    const j=await r.json();
-    if(!r.ok)throw new Error(j.error&&j.error.message||r.status);
-    const a=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('')||"Sorry, I couldn't answer that.";
-    chatHistory.push({role:'model',parts:[{text:a}]});wait.textContent=a;
-  }catch(err){chatHistory.pop();wait.textContent="Couldn't reach the assistant ("+err.message+"). Please try again.";}
-  chatSend.disabled=false;msgs.scrollTop=msgs.scrollHeight;chatIn.focus();
-};
 </script>
-<script type="module" src="chat.js"></script>
 </body>
 </html>

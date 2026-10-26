@@ -1,11 +1,19 @@
 // @ts-nocheck
 // Firebase chat: Google sign-in, role-based permissions, group room, direct messages.
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getFirestore,collection,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,onSnapshot,query,orderBy,limitToLast,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getAI,getGenerativeModel,GoogleAIBackend} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-ai.js";
+import {initializeAppCheck,ReCaptchaV3Provider} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app-check.js";
+import {getFirestore,collection,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,onSnapshot,query,orderBy,limitToLast,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 // 1) Paste your Firebase web app config here (Project settings > Your apps).
-const FIREBASE_CONFIG={apiKey: "AIzaSyDyOxoqlrqLverNeZXYqwrL7V1rhe9iJe4",authDomain: "modernschool-e22fd.firebaseapp.com",projectId: "modernschool-e22fd",storageBucket: "modernschool-e22fd.firebasestorage.app",messagingSenderId: "479379818353",appId: "1:479379818353:web:a53e9001e4a9a05eb958d0"};
+const FIREBASE_CONFIG={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT",appId:"YOUR_APP_ID"};
+
+// 2) Gemini assistant, served through Firebase AI Logic (no API key in this site).
+const CHAT_MODEL="gemini-3.1-flash-lite";
+// 3) Recommended: reCAPTCHA v3 site key for Firebase App Check (Firebase console > App Check). Leave "" to skip.
+const APPCHECK_SITE_KEY="";
+let AI=null;
 
 const css=`
 .rc{max-width:760px;margin:26px auto 0;background:var(--ink);border:1px solid var(--line);border-top:4px solid var(--maroon);border-radius:22px;overflow:hidden}
@@ -40,6 +48,8 @@ if(FIREBASE_CONFIG.apiKey==="YOUR_API_KEY"){
   note("Chat isn't set up yet. Add your Firebase config to chat.js (see README).");
 }else{
   const app=initializeApp(FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app);
+  if(APPCHECK_SITE_KEY)initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APPCHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
+  AI=getAI(app,{backend:new GoogleAIBackend()});
   let me=null,users={},target='room',unsubMsgs=null,unsubUsers=null;
   const canDM=u=>me.role!=='student'||['staff','admin'].includes(u.role); // students can only message staff/admin
   const cid=(a,b)=>a<b?a+'_'+b:b+'_'+a;
@@ -108,3 +118,31 @@ if(FIREBASE_CONFIG.apiKey==="YOUR_API_KEY"){
     }catch(x){err.textContent="Message not sent: you don't have permission to message here."}
   }
 }
+
+// ---- Modfest Assistant (floating widget) ----
+const aChat=document.getElementById('chat'),aMsgs=document.getElementById('msgs'),aIn=document.getElementById('chatIn'),aSend=document.getElementById('chatSend');
+const aHist=[];
+document.getElementById('chatFab').onclick=()=>{aChat.hidden=!aChat.hidden;if(!aChat.hidden)aIn.focus()};
+document.getElementById('chatClose').onclick=()=>aChat.hidden=true;
+function aAdd(t,who){const d=document.createElement('div');d.className='m '+who;d.textContent=t;aMsgs.appendChild(d);aMsgs.scrollTop=aMsgs.scrollHeight;return d}
+function aContext(){
+  const days=[...document.querySelectorAll('section.day')].map(sec=>sec.querySelector('h2').textContent+':\n'+
+    [...sec.querySelectorAll('.card')].map(x=>'Act '+x.querySelector('.num').textContent+' - '+x.querySelector('.title').textContent+' (Faculty: '+x.querySelector('.fac b').textContent+')').join('\n')).join('\n\n');
+  const ppl=(typeof PEOPLE!=='undefined'?Object.values(PEOPLE).flat():[]).map(p=>p.role+': '+p.name).join('\n');
+  return "You are the friendly assistant for Modfest 2026 at Modern School. Answer briefly and only using the information below; if you don't know, say so and suggest asking the school.\n\nSCHEDULE\n"+days+"\n\nPEOPLE\n"+ppl;
+}
+document.getElementById('chatForm').onsubmit=async e=>{
+  e.preventDefault();
+  const q=aIn.value.trim();if(!q)return;
+  aIn.value='';aAdd(q,'me');
+  if(!AI){aAdd("The assistant isn't set up yet. Add your Firebase config in chat.js.",'bot');return}
+  aSend.disabled=true;aHist.push({role:'user',parts:[{text:q}]});
+  const wait=aAdd('Thinking…','bot');
+  try{
+    const model=getGenerativeModel(AI,{model:CHAT_MODEL,systemInstruction:aContext()});
+    const r=await model.generateContent({contents:aHist});
+    const a=r.response.text()||"Sorry, I couldn't answer that.";
+    aHist.push({role:'model',parts:[{text:a}]});wait.textContent=a;
+  }catch(err){aHist.pop();wait.textContent="Couldn't reach the assistant ("+(err.message||err)+"). Please try again.";}
+  aSend.disabled=false;aMsgs.scrollTop=aMsgs.scrollHeight;aIn.focus();
+};
