@@ -29,8 +29,8 @@ const CHAT_MODEL="gemini-3.1-flash-lite";
 // 3) Recommended: reCAPTCHA v3 site key for Firebase App Check (Firebase console > App Check). Leave "" to skip.
 const APPCHECK_SITE_KEY="";
 // Firestore database ID. The console's standard database is "(default)" (with parentheses).
-// Yours was created as "default" (no parentheses), which is a separate named database.
-const FIRESTORE_DB_ID="default";
+// Use "(default)" for the standard database.
+const FIRESTORE_DB_ID="(default)";
 let AI=null;
 
 const css=`
