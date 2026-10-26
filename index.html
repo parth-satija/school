@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modfest · Modern School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:rgb(135,36,30);--maroon-hi:#a8342c;--maroon-lo:#5a1713;--black:#000;--ink:#0d0a0a;--card:#161111;--line:#2b2020;--text:#f3ebe9;--muted:#a99895}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--black);color:var(--text);font:16px/1.5 Figtree,system-ui,sans-serif;min-height:100vh;
+ background-image:radial-gradient(900px 500px at 50% -120px,rgba(135,36,30,.35),transparent 70%)}
+.wrap{max-width:980px;margin:0 auto;padding:20px 18px 70px}
+/* hero */
+.banner{position:relative;height:clamp(240px,42vw,360px);border-radius:28px;overflow:hidden;display:grid;place-items:center;
+ border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -30px rgba(135,36,30,.7);
+ background:linear-gradient(135deg,var(--maroon-lo),var(--maroon) 55%,#1a0807)}
+.banner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.banner::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,transparent 30%,rgba(0,0,0,.55))}
+.logo{position:relative;z-index:1;width:clamp(130px,26vw,190px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#fff;
+ border:6px solid #000;outline:3px solid var(--maroon-hi);box-shadow:0 14px 40px rgba(0,0,0,.6);display:grid;place-items:center}
+.logo img{width:100%;height:100%;object-fit:cover}
+h1{font:800 clamp(2rem,6vw,3.4rem)/1.05 Fraunces,serif;text-align:center;margin:38px 0 6px;letter-spacing:-.01em}
+.sub{text-align:center;color:var(--muted);margin-bottom:26px}
+/* day buttons */
+.tabs{position:sticky;top:0;z-index:10;display:flex;gap:10px;justify-content:center;padding:14px 0;background:linear-gradient(#000 70%,transparent)}
+.tabs a{flex:1;max-width:200px;text-align:center;text-decoration:none;color:var(--text);font-weight:600;padding:12px 18px;border-radius:999px;
+ border:1.5px solid var(--maroon);background:#0a0606;transition:.2s}
+.tabs a:hover,.tabs a:focus-visible{background:var(--maroon);outline:none;transform:translateY(-1px)}
+/* days */
+.day{margin-top:46px}
+.day h2{font:800 1.9rem Fraunces,serif;display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.day h2::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--maroon),transparent)}
+.grid{display:grid;gap:14px;grid-template-columns:1fr;max-width:720px;margin:0 auto}
+.card{display:flex;gap:16px;align-items:center;padding:16px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--maroon);border-radius:18px;transition:.2s}
+.card:hover{border-color:var(--maroon-hi);transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(135,36,30,.8)}
+.num{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font:800 1.5rem Fraunces,serif;
+ background:linear-gradient(145deg,var(--maroon-hi),var(--maroon-lo));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.info{min-width:0}
+.title{font-weight:600;font-size:1.08rem;line-height:1.3}
+.fac{color:var(--muted);font-size:.92rem;margin-top:3px}
+.fac b{color:#e6a39e;font-weight:500}
+.msg{color:var(--muted);padding:18px;border:1px dashed var(--line);border-radius:14px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:60px}
+
+/* top tabs */
+.topnav{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topnav .in{max-width:980px;margin:0 auto;display:flex;gap:6px;padding:10px 18px;overflow-x:auto}
+.topnav button{flex:none;font:600 .98rem Figtree,sans-serif;color:var(--muted);background:none;border:0;padding:10px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+.topnav button:hover{color:var(--text)}
+.topnav button[aria-selected=true]{background:var(--maroon);color:#fff}
+.topnav button:focus-visible{outline:2px solid var(--maroon-hi);outline-offset:2px}
+.panel[hidden]{display:none}
+.tabs{top:62px}
+html{scroll-padding-top:150px}
+.page-title{font:800 clamp(2rem,6vw,3.2rem)/1.05 Fraunces,serif;text-align:center;margin:34px 0 8px}
+.people{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-top:34px}
+.person{text-align:center;padding:26px 20px 28px;background:linear-gradient(180deg,#1a1212,var(--card));border:1px solid var(--line);border-top:4px solid var(--maroon);border-radius:24px;transition:.2s}
+.person:hover{transform:translateY(-4px);border-color:var(--maroon-hi);box-shadow:0 18px 36px -16px rgba(135,36,30,.85)}
+.photo{width:170px;height:200px;margin:0 auto 18px;border-radius:20px;overflow:hidden;background:linear-gradient(160deg,var(--maroon),var(--maroon-lo));display:grid;place-items:end center;border:1px solid rgba(255,255,255,.1)}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo svg{width:78%;opacity:.55}
+.role{display:inline-block;font-weight:600;font-size:.9rem;color:#fff;background:var(--maroon);padding:4px 14px;border-radius:999px;margin-bottom:10px}
+.pname{font:800 1.4rem Fraunces,serif}
+.note{color:var(--muted);text-align:center;font-size:.85rem;margin-top:14px}
+
+/* chatbot */
+.chat-fab{position:fixed;right:18px;bottom:18px;z-index:40;width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:linear-gradient(145deg,var(--maroon-hi),var(--maroon-lo));box-shadow:0 10px 30px rgba(135,36,30,.7);display:grid;place-items:center;transition:.2s}
+.chat-fab:hover{transform:scale(1.06)}
+.chat-fab svg{width:28px;height:28px}
+.chat{position:fixed;right:18px;bottom:90px;z-index:40;width:min(380px,calc(100vw - 36px));height:min(560px,calc(100vh - 120px));display:flex;flex-direction:column;background:var(--ink);border:1px solid var(--maroon);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.8)}
+.chat[hidden]{display:none}
+.chat-head{padding:14px 16px;background:linear-gradient(135deg,var(--maroon-lo),var(--maroon));display:flex;justify-content:space-between;align-items:center;font:800 1.1rem Fraunces,serif}
+.chat-head button{background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
+.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:85%;padding:10px 13px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word;font-size:.95rem}
+.m.bot{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.m.me{background:var(--maroon);align-self:flex-end;border-bottom-right-radius:4px}
+.chat form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.chat input{flex:1;min-width:0;background:#0a0606;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:11px 16px;font:inherit}
+.chat input:focus{outline:2px solid var(--maroon-hi);border-color:transparent}
+.chat form button{border:0;border-radius:999px;background:var(--maroon);color:#fff;font:600 .95rem Figtree,sans-serif;padding:0 18px;cursor:pointer}
+.chat form button:disabled{opacity:.5}
+@media(max-width:480px){.tabs a{padding:11px 8px;font-size:.9rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="topnav"><div class="in" role="tablist">
+  <button role="tab" data-tab="modfest" aria-selected="true">Modfest 2026</button>
+  <button role="tab" data-tab="leadership" aria-selected="false">Leadership</button>
+  <button role="tab" data-tab="council" aria-selected="false">Student Council</button>
+</div></div>
+<main class="wrap">
+<section class="panel" id="p-modfest">
+<!-- Rounded rectangle banner (replace banner.jpg) with circular logo (replace logo.png) -->
+  <header class="banner">
+    <img src="banner.jpg" alt="" onerror="this.remove()">
+    <div class="logo">
+      <img src="logo.png" alt="Modern School logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'LOGO',style:'font:800 1.4rem Fraunces,serif;color:#87241e'}))">
+    </div>
+  </header>
+
+  <h1>Day-Wise Modfest Schedule</h1>
+  <p class="sub">Modern School · Tap a day to jump to its acts</p>
+
+  <nav class="tabs" aria-label="Jump to day">
+    <a href="#day1">Day 1</a><a href="#day2">Day 2</a><a href="#day3">Day 3</a>
+  </nav>
+
+  <section class="day" id="day1"><h2>Day 1</h2><div class="grid" data-csv="day1.csv"></div></section>
+  <section class="day" id="day2"><h2>Day 2</h2><div class="grid" data-csv="day2.csv"></div></section>
+  <section class="day" id="day3"><h2>Day 3</h2><div class="grid" data-csv="day3.csv"></div></section>
+
+  </section>
+<section class="panel" id="p-leadership" hidden>
+  <h1 class="page-title">Leadership</h1><p class="sub">The people guiding Modern School</p>
+  <div class="people" data-people="leadership"></div>
+</section>
+<section class="panel" id="p-council" hidden>
+  <h1 class="page-title">Student Council</h1><p class="sub">Your student representatives</p>
+  <div class="people" data-people="council"></div>
+</section>
+<footer>Modfest · Modern School</footer>
+</main>
+
+<button class="chat-fab" id="chatFab" aria-label="Open chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.9A8 8 0 1 1 21 12z"/></svg></button>
+<div class="chat" id="chat" hidden role="dialog" aria-label="Modfest assistant">
+  <div class="chat-head"><span>Modfest Assistant</span><button id="chatClose" aria-label="Close chat">&times;</button></div>
+  <div class="msgs" id="msgs"><div class="m bot">Hi! Ask me about the Modfest schedule, acts, faculty, or Modern School.</div></div>
+  <form id="chatForm"><input id="chatIn" placeholder="Type your question" autocomplete="off" required><button id="chatSend">Send</button></form>
+</div>
+<script>
+// Minimal CSV parser (handles quoted fields, commas and newlines inside quotes)
+function parseCSV(t){
+  const rows=[];let row=[],f='',q=false;
+  t=t.replace(/^\uFEFF/,'');
+  for(let i=0;i<t.length;i++){
+    const c=t[i];
+    if(q){ if(c=='"'){ if(t[i+1]=='"'){f+='"';i++} else q=false } else f+=c }
+    else if(c=='"') q=true;
+    else if(c==','){row.push(f);f=''}
+    else if(c=='\n'||c=='\r'){ if(c=='\r'&&t[i+1]=='\n')i++; row.push(f);f=''; if(row.some(x=>x.trim()))rows.push(row); row=[] }
+    else f+=c;
+  }
+  row.push(f); if(row.some(x=>x.trim()))rows.push(row);
+  return rows;
+}
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+
+const SAMPLE=(()=>{const base=[[1,"Welcome Dance","Ms. Sharma"],[2,"Classical Vocal Ensemble","Mr. Verma"],[3,"Skit: The Last Bench","Mrs. Kapoor"],[4,"Western Band Showcase","Mr. D'Souza"],[5,"Kathak Fusion","Ms. Iyer"]];
+ const f=b=>"act_number,act_title,faculty\n"+b.map(r=>r.map(x=>/,/.test(x)?'"'+x+'"':x).join(",")).join("\n");
+ return{"day1.csv":f(base),"day2.csv":f(base),"day3.csv":f(base)}})();
+// Edit names and photo paths here. Put photos in a /photos folder.
+const PEOPLE={
+ leadership:[{role:"Chairman",name:"Name Surname",photo:"photos/chairman.jpg"},{role:"Director",name:"Name Surname",photo:"photos/director.jpg"},{role:"Principal",name:"Name Surname",photo:"photos/principal.jpg"}],
+ council:[{role:"President",name:"Name Surname",photo:"photos/president.jpg"},{role:"Vice President",name:"Name Surname",photo:"photos/vice-president.jpg"},{role:"General Secretary",name:"Name Surname",photo:"photos/general-secretary.jpg"}]};
+const SIL='<svg viewBox="0 0 100 100"><circle cx="50" cy="36" r="20" fill="#fff"/><path d="M8 100c0-26 19-40 42-40s42 14 42 40z" fill="#fff"/></svg>';
+window.ph=i=>i.parentNode.innerHTML=SIL;
+document.querySelectorAll('[data-people]').forEach(box=>{
+  box.innerHTML=PEOPLE[box.dataset.people].map(p=>`<article class="person"><div class="photo"><img src="${p.photo}" alt="${p.role}" onerror="ph(this)"></div><span class="role">${p.role}</span><div class="pname">${p.name}</div></article>`).join('');
+});
+// Tabs
+const tabs=[...document.querySelectorAll('.topnav button')];
+function show(id){
+  if(!['modfest','leadership','council'].includes(id))id='modfest';
+  tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='p-'+id);
+  window.scrollTo(0,0);
+}
+tabs.forEach(b=>b.onclick=()=>{location.hash=b.dataset.tab});
+addEventListener('hashchange',()=>show(location.hash.slice(1)));
+if(/^#(leadership|council)$/.test(location.hash))show(location.hash.slice(1));
+// Day buttons (hash links would clash with tabs, so scroll manually)
+document.querySelectorAll('.tabs a').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})});
+
+document.querySelectorAll('[data-csv]').forEach(async box=>{
+  const file=box.dataset.csv;
+  try{
+    let text,sample=false;
+    try{const res=await fetch(file,{cache:'no-store'});if(!res.ok)throw 0;text=await res.text()}
+    catch(_){text=SAMPLE[file];sample=true;if(!text)throw 0}
+    if(sample)box.insertAdjacentHTML('beforebegin','<p class="note">Showing sample acts. '+file+' could not be loaded.</p>');
+    const rows=parseCSV(text);
+    const head=rows.shift().map(h=>h.trim().toLowerCase());
+    // Columns are matched by name; falls back to first three columns
+    const idx=(re,fb)=>{const i=head.findIndex(h=>re.test(h));return i<0?fb:i};
+    const iN=idx(/num|no|act(?!.*(title|name))/,0), iT=idx(/title|name/,1), iF=idx(/facult|teacher|incharge/,2);
+    if(!rows.length){box.innerHTML='<p class="msg">No acts listed yet.</p>';return}
+    box.innerHTML=rows.map(r=>`
+      <article class="card">
+        <div class="num" aria-label="Act ${esc((r[iN]||'').trim())}">${esc((r[iN]||'').trim())}</div>
+        <div class="info">
+          <div class="title">${esc((r[iT]||'').trim())}</div>
+          <div class="fac">Faculty: <b>${esc((r[iF]||'').trim())}</b></div>
+        </div>
+      </article>`).join('');
+  }catch(e){
+    box.innerHTML=`<p class="msg">Couldn't load ${file}. Make sure it sits next to index.html in the repo. If you opened this file directly from your computer, use GitHub Pages or a local server (e.g. <code>python -m http.server</code>) instead.</p>`;
+  }
+});
+
+// ---- Chatbot (Gemini) ----
+// WARNING: a key placed here is visible to anyone who views the page source.
+// Restrict it to your site's domain in Google AI Studio / Cloud Console and set a quota.
+const CHAT_KEY="AQ.Ab8RN6K5tlNegvyIPM5Egi0sd5B1Hug6C4p2t4HbXjJkMXGqPQ";
+const CHAT_MODEL="gemini-3.1-flash-lite";
+const chatEl=document.getElementById('chat'),msgs=document.getElementById('msgs'),chatIn=document.getElementById('chatIn'),chatSend=document.getElementById('chatSend');
+const chatHistory=[];
+document.getElementById('chatFab').onclick=()=>{chatEl.hidden=!chatEl.hidden;if(!chatEl.hidden)chatIn.focus()};
+document.getElementById('chatClose').onclick=()=>chatEl.hidden=true;
+function addMsg(t,who){const d=document.createElement('div');d.className='m '+who;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function context(){
+  const days=[...document.querySelectorAll('section.day')].map(sec=>sec.querySelector('h2').textContent+':\n'+
+    [...sec.querySelectorAll('.card')].map(c=>'Act '+c.querySelector('.num').textContent+' - '+c.querySelector('.title').textContent+' (Faculty: '+c.querySelector('.fac b').textContent+')').join('\n')).join('\n\n');
+  const ppl=Object.values(PEOPLE).flat().map(p=>p.role+': '+p.name).join('\n');
+  return "You are the friendly assistant for Modfest 2026 at Modern School. Answer briefly and only using the information below; if you don't know, say so and suggest asking the school.\n\nSCHEDULE\n"+days+"\n\nPEOPLE\n"+ppl;
+}
+document.getElementById('chatForm').onsubmit=async e=>{
+  e.preventDefault();
+  const q=chatIn.value.trim();if(!q)return;
+  chatIn.value='';chatSend.disabled=true;addMsg(q,'me');
+  chatHistory.push({role:'user',parts:[{text:q}]});
+  const wait=addMsg('Thinking…','bot');
+  try{
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+CHAT_MODEL+':generateContent',{method:'POST',
+      headers:{'Content-Type':'application/json','x-goog-api-key':CHAT_KEY},
+      body:JSON.stringify({systemInstruction:{parts:[{text:context()}]},contents:chatHistory})});
+    const j=await r.json();
+    if(!r.ok)throw new Error(j.error&&j.error.message||r.status);
+    const a=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('')||"Sorry, I couldn't answer that.";
+    chatHistory.push({role:'model',parts:[{text:a}]});wait.textContent=a;
+  }catch(err){chatHistory.pop();wait.textContent="Couldn't reach the assistant ("+err.message+"). Please try again.";}
+  chatSend.disabled=false;msgs.scrollTop=msgs.scrollHeight;chatIn.focus();
+};
+</script>
+</body>
+</html>
