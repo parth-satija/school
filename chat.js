@@ -1,10 +1,13 @@
 // @ts-nocheck
+// Firebase loads dynamically so a failure shows a message instead of silently killing the page.
+const FB="https://www.gstatic.com/firebasejs/11.10.0/";
+let loadErr=null,M={};
+try{const [a,au,fs]=await Promise.all([import(FB+"firebase-app.js"),import(FB+"firebase-auth.js"),import(FB+"firebase-firestore.js")]);Object.assign(M,a,au,fs)}catch(e){loadErr=e}
+try{Object.assign(M,await import(FB+"firebase-ai.js"))}catch(e){console.warn("firebase-ai failed to load",e)}
+try{Object.assign(M,await import(FB+"firebase-app-check.js"))}catch(e){console.warn("app-check failed to load",e)}
+const {initializeApp,getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,getAI,getGenerativeModel,GoogleAIBackend,initializeAppCheck,ReCaptchaV3Provider,getFirestore,collection,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,onSnapshot,query,orderBy,limitToLast,serverTimestamp}=M;
+window.__assistantReady=true;
 // Firebase chat: Google sign-in, role-based permissions, group room, direct messages.
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getAI,getGenerativeModel,GoogleAIBackend} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-ai.js";
-import {initializeAppCheck,ReCaptchaV3Provider} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app-check.js";
-import {getFirestore,collection,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,onSnapshot,query,orderBy,limitToLast,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 // 1) Paste your Firebase web app config here (Project settings > Your apps).
 const FIREBASE_CONFIG={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT",appId:"YOUR_APP_ID"};
@@ -44,12 +47,14 @@ const root=document.getElementById('chatApp');
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const note=(msg,btn)=>{root.innerHTML='';const d=el('div','rc rc-note');d.append(el('p',null,msg));if(btn){const b=el('button',null,btn[0]);b.onclick=btn[1];d.append(b)}root.append(d)};
 
-if(FIREBASE_CONFIG.apiKey==="YOUR_API_KEY"){
+if(loadErr){
+  console.error(loadErr);note("Couldn't load Firebase ("+(loadErr.message||loadErr)+"). Open the site over http(s), not as a local file, and check the browser console.");
+}else if(FIREBASE_CONFIG.apiKey==="YOUR_API_KEY"){
   note("Chat isn't set up yet. Add your Firebase config to chat.js (see README).");
 }else{
   const app=initializeApp(FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app);
-  if(APPCHECK_SITE_KEY)initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APPCHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
-  AI=getAI(app,{backend:new GoogleAIBackend()});
+  if(APPCHECK_SITE_KEY&&initializeAppCheck)initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APPCHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
+  if(getAI)AI=getAI(app,{backend:new GoogleAIBackend()});
   let me=null,users={},target='room',unsubMsgs=null,unsubUsers=null;
   const canDM=u=>me.role!=='student'||['staff','admin'].includes(u.role); // students can only message staff/admin
   const cid=(a,b)=>a<b?a+'_'+b:b+'_'+a;
@@ -122,8 +127,6 @@ if(FIREBASE_CONFIG.apiKey==="YOUR_API_KEY"){
 // ---- Modfest Assistant (floating widget) ----
 const aChat=document.getElementById('chat'),aMsgs=document.getElementById('msgs'),aIn=document.getElementById('chatIn'),aSend=document.getElementById('chatSend');
 const aHist=[];
-document.getElementById('chatFab').onclick=()=>{aChat.hidden=!aChat.hidden;if(!aChat.hidden)aIn.focus()};
-document.getElementById('chatClose').onclick=()=>aChat.hidden=true;
 function aAdd(t,who){const d=document.createElement('div');d.className='m '+who;d.textContent=t;aMsgs.appendChild(d);aMsgs.scrollTop=aMsgs.scrollHeight;return d}
 function aContext(){
   const days=[...document.querySelectorAll('section.day')].map(sec=>sec.querySelector('h2').textContent+':\n'+
@@ -131,7 +134,7 @@ function aContext(){
   const ppl=(typeof PEOPLE!=='undefined'?Object.values(PEOPLE).flat():[]).map(p=>p.role+': '+p.name).join('\n');
   return "You are the friendly assistant for Modfest 2026 at Modern School. Answer briefly and only using the information below; if you don't know, say so and suggest asking the school.\n\nSCHEDULE\n"+days+"\n\nPEOPLE\n"+ppl;
 }
-document.getElementById('chatForm').onsubmit=async e=>{
+document.getElementById('chatForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const q=aIn.value.trim();if(!q)return;
   aIn.value='';aAdd(q,'me');
@@ -145,4 +148,4 @@ document.getElementById('chatForm').onsubmit=async e=>{
     aHist.push({role:'model',parts:[{text:a}]});wait.textContent=a;
   }catch(err){aHist.pop();wait.textContent="Couldn't reach the assistant ("+(err.message||err)+"). Please try again.";}
   aSend.disabled=false;aMsgs.scrollTop=aMsgs.scrollHeight;aIn.focus();
-};
+});

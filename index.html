@@ -208,6 +208,20 @@ document.querySelectorAll('[data-csv]').forEach(async box=>{
     box.innerHTML=`<p class="msg">Couldn't load ${file}. Make sure it sits next to index.html in the repo. If you opened this file directly from your computer, use GitHub Pages or a local server (e.g. <code>python -m http.server</code>) instead.</p>`;
   }
 });
+
+// Assistant popup + fallbacks (work even if chat.js fails to load)
+const aPanel=document.getElementById('chat'),aBox=document.getElementById('msgs'),aInput=document.getElementById('chatIn');
+document.getElementById('chatFab').onclick=()=>{aPanel.hidden=!aPanel.hidden;if(!aPanel.hidden)aInput.focus()};
+document.getElementById('chatClose').onclick=()=>aPanel.hidden=true;
+document.getElementById('chatForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  if(window.__assistantReady)return;
+  const d=document.createElement('div');d.className='m bot';
+  d.textContent=location.protocol==='file:'?"Open this site through a web server (GitHub Pages or python -m http.server). Browsers block the chat scripts when a page is opened as a local file.":"The assistant is still loading or failed to load. Check the browser console (F12).";
+  aBox.appendChild(d);
+});
+const chatRoot=document.getElementById('chatApp');
+if(location.protocol==='file:')chatRoot.innerHTML='<p class="note">Chat needs a web server. Open the site on GitHub Pages or run <code>python -m http.server</code> in this folder.</p>';
 </script>
 </body>
 </html>
