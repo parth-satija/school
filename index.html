@@ -229,6 +229,15 @@ document.getElementById('chatForm').addEventListener('submit',e=>{
 });
 const chatRoot=document.getElementById('chatApp');
 if(location.protocol==='file:')chatRoot.innerHTML='<p class="note">Chat needs a web server. Open the site on GitHub Pages or run <code>python -m http.server</code> in this folder.</p>';
+
+// Visible diagnostics if chat.js never renders anything
+(function(){
+  const show=m=>{if(chatRoot.innerHTML.trim())return;const p=document.createElement('p');p.className='note';p.textContent=m;chatRoot.appendChild(p)};
+  window.addEventListener('error',e=>show('Chat failed to start: '+(e.message||'script error')+'. Press F12 and check the Console.'));
+  window.addEventListener('unhandledrejection',e=>show('Chat failed to start: '+((e.reason&&e.reason.message)||e.reason)+'.'));
+  setTimeout(()=>show("Chat didn't start. Make sure chat.js is in the same folder as index.html, and open the site over http(s), not as a local file."),5000);
+})();
 </script>
+<script type="module" src="chat.js" onerror="document.getElementById('chatApp').textContent='Couldn\'t load chat.js. Upload it to the same folder as index.html.'"></script>
 </body>
 </html>

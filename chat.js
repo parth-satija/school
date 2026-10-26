@@ -12,7 +12,7 @@ const setPill=(u,txt)=>{if(!pill)return;pill.classList.toggle('on',!!u);pill.que
 // Firebase chat: Google sign-in, role-based permissions, group room, direct messages.
 
 // 1) Paste your Firebase web app config here (Project settings > Your apps).
-const FIREBASE_CONFIG={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT",appId:"YOUR_APP_ID"};
+const FIREBASE_CONFIG={apiKey:"AIzaSyDyOxoqlrqLverNeZXYqwrL7V1rhe9iJe4",authDomain:"modernschool-e22fd.firebaseapp.com",projectId:"modernschool-e22fd",storageBucket:"modernschool-e22fd.firebasestorage.app",messagingSenderId:"479379818353",appId:"1:479379818353:web:a53e9001e4a9a05eb958d0"};
 
 // 2) Gemini assistant, served through Firebase AI Logic (no API key in this site).
 const CHAT_MODEL="gemini-3.1-flash-lite";
