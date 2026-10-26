@@ -2,83 +2,132 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#87241e">
 <title>Modfest · Modern School</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--maroon:rgb(135,36,30);--maroon-hi:#a8342c;--maroon-lo:#5a1713;--black:#000;--ink:#0d0a0a;--card:#161111;--line:#2b2020;--text:#f3ebe9;--muted:#a99895}
+:root{--maroon:rgb(135,36,30);--maroon-hi:#a8342c;--maroon-lo:#5a1713;--black:#000;--ink:#0d0a0a;--card:#161111;--line:#2b2020;--text:#f3ebe9;--muted:#a99895;
+ --bar:64px;--nav:68px}
 *{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
+html{scroll-behavior:smooth;scroll-padding-top:150px;-webkit-tap-highlight-color:transparent}
 body{background:var(--black);color:var(--text);font:16px/1.5 Figtree,system-ui,sans-serif;min-height:100vh;
- background-image:radial-gradient(900px 500px at 50% -120px,rgba(135,36,30,.35),transparent 70%)}
-.wrap{max-width:980px;margin:0 auto;padding:20px 18px 70px}
-/* hero */
-.banner{position:relative;height:clamp(240px,42vw,360px);border-radius:28px;overflow:hidden;display:grid;place-items:center;
- border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -30px rgba(135,36,30,.7);
- background:linear-gradient(135deg,var(--maroon-lo),var(--maroon) 55%,#1a0807)}
-.banner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.banner::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,transparent 30%,rgba(0,0,0,.55))}
-.logo{position:relative;z-index:1;width:clamp(130px,26vw,190px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#fff;
- border:6px solid #000;outline:3px solid var(--maroon-hi);box-shadow:0 14px 40px rgba(0,0,0,.6);display:grid;place-items:center}
-.logo img{width:100%;height:100%;object-fit:cover}
-h1{font:800 clamp(2rem,6vw,3.4rem)/1.05 Fraunces,serif;text-align:center;margin:38px 0 6px;letter-spacing:-.01em}
-.sub{text-align:center;color:var(--muted);margin-bottom:26px}
-/* day buttons */
-.tabs{position:sticky;top:0;z-index:10;display:flex;gap:10px;justify-content:center;padding:14px 0;background:linear-gradient(#000 70%,transparent)}
-.tabs a{flex:1;max-width:200px;text-align:center;text-decoration:none;color:var(--text);font-weight:600;padding:12px 18px;border-radius:999px;
- border:1.5px solid var(--maroon);background:#0a0606;transition:.2s}
-.tabs a:hover,.tabs a:focus-visible{background:var(--maroon);outline:none;transform:translateY(-1px)}
-/* days */
-.day{margin-top:46px}
-.day h2{font:800 1.9rem Fraunces,serif;display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.day h2::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--maroon),transparent)}
-.grid{display:grid;gap:14px;grid-template-columns:1fr;max-width:720px;margin:0 auto}
-.card{display:flex;gap:16px;align-items:center;padding:16px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--maroon);border-radius:18px;transition:.2s}
-.card:hover{border-color:var(--maroon-hi);transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(135,36,30,.8)}
-.num{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font:800 1.5rem Fraunces,serif;
- background:linear-gradient(145deg,var(--maroon-hi),var(--maroon-lo));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.info{min-width:0}
-.title{font-weight:600;font-size:1.08rem;line-height:1.3}
-.fac{color:var(--muted);font-size:.92rem;margin-top:3px}
-.fac b{color:#e6a39e;font-weight:500}
-.msg{color:var(--muted);padding:18px;border:1px dashed var(--line);border-radius:14px}
-footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:60px}
+ background-image:radial-gradient(900px 420px at 50% -140px,rgba(135,36,30,.38),transparent 70%);background-repeat:no-repeat}
+button{font-family:inherit}
 
-/* top tabs */
-.topnav{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.topnav .in{max-width:980px;margin:0 auto;display:flex;gap:6px;padding:10px 18px;overflow-x:auto}
-.topnav button{flex:none;font:600 .98rem Figtree,sans-serif;color:var(--muted);background:none;border:0;padding:10px 18px;border-radius:999px;cursor:pointer;transition:.2s}
-.topnav button:hover{color:var(--text)}
-.topnav button[aria-selected=true]{background:var(--maroon);color:#fff}
-.topnav button:focus-visible{outline:2px solid var(--maroon-hi);outline-offset:2px}
-.auth-pill{flex:none;margin-left:auto;display:flex;align-items:center;gap:8px;max-width:220px;text-decoration:none;color:var(--muted);font:600 .85rem Figtree,sans-serif;padding:9px 14px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+/* ===== App bar ===== */
+.appbar{position:sticky;top:0;z-index:30;height:calc(var(--bar) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);
+ background:linear-gradient(135deg,var(--maroon-lo),var(--maroon));border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 8px 24px -12px rgba(0,0,0,.8)}
+.appbar .in{max-width:1000px;height:var(--bar);margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.crest{flex:none;width:42px;height:42px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid #000;outline:2px solid rgba(255,255,255,.35);display:grid;place-items:center}
+.crest img{width:100%;height:100%;object-fit:cover}
+.crest span{font:800 .7rem Fraunces,serif;color:var(--maroon)}
+.brand b{display:block;font:800 1.15rem/1.1 Fraunces,serif;white-space:nowrap}
+.brand small{display:block;font-size:.76rem;opacity:.85;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.auth-pill{flex:none;margin-left:auto;display:flex;align-items:center;gap:8px;max-width:190px;text-decoration:none;color:#fff;font:600 .8rem Figtree,sans-serif;padding:8px 13px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.18);border-radius:999px;white-space:nowrap}
 .auth-pill span{overflow:hidden;text-overflow:ellipsis}
-.auth-pill i{flex:none;width:9px;height:9px;border-radius:50%;background:#6b5b59}
-.auth-pill.on{color:var(--text);border-color:#2f6b3f}
+.auth-pill i{flex:none;width:9px;height:9px;border-radius:50%;background:#8a7a78}
+.auth-pill.on{border-color:#3f9f5a}
 .auth-pill.on i{background:#3ddc84;box-shadow:0 0 8px #3ddc84}
-.auth-pill:focus-visible{outline:2px solid var(--maroon-hi);outline-offset:2px}
+.auth-pill:focus-visible,.bottomnav button:focus-visible,.daytabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+.wrap{max-width:1000px;margin:0 auto;padding:18px 16px calc(var(--nav) + 70px + env(safe-area-inset-bottom,0px))}
 .panel[hidden]{display:none}
-.tabs{top:62px}
-html{scroll-padding-top:150px}
-.page-title{font:800 clamp(2rem,6vw,3.2rem)/1.05 Fraunces,serif;text-align:center;margin:34px 0 8px}
-.people{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-top:34px}
-.person{text-align:center;padding:26px 20px 28px;background:linear-gradient(180deg,#1a1212,var(--card));border:1px solid var(--line);border-top:4px solid var(--maroon);border-radius:24px;transition:.2s}
+.panel{animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== Hero card ===== */
+.hero{position:relative;overflow:hidden;border-radius:26px;border:1px solid rgba(255,255,255,.09);
+ background:linear-gradient(135deg,var(--maroon-lo),var(--maroon) 60%,#1a0807);box-shadow:0 26px 50px -28px rgba(135,36,30,.9)}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.7))}
+.hero .body{position:relative;z-index:1;display:flex;align-items:center;gap:20px;padding:26px 22px}
+.logo{flex:none;width:clamp(86px,20vw,128px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#fff;border:5px solid #000;outline:3px solid var(--maroon-hi);box-shadow:0 12px 30px rgba(0,0,0,.6);display:grid;place-items:center}
+.logo img{width:100%;height:100%;object-fit:cover}
+.hero .txt{min-width:0}
+.hero .eyebrow{display:inline-block;font-weight:700;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.45);padding:4px 12px;border-radius:999px;margin-bottom:8px}
+h1{font:800 clamp(1.6rem,5.4vw,2.7rem)/1.08 Fraunces,serif;letter-spacing:-.01em}
+.sub{color:var(--muted);margin-top:4px}
+.hero .sub{color:rgba(243,235,233,.85)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.stat{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:6px 14px;font-size:.82rem;color:rgba(243,235,233,.85)}
+.stat b{display:block;font:800 1.15rem/1.1 Fraunces,serif;color:#fff}
+
+/* ===== Day switcher ===== */
+.daytabs{position:sticky;top:calc(var(--bar) + env(safe-area-inset-top,0px));z-index:20;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px -16px 0;padding:12px 16px;background:linear-gradient(var(--black) 75%,transparent)}
+.daytabs button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 6px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;transition:.2s;min-width:0}
+.daytabs button b{font-size:.95rem}
+.daytabs button small{font-size:.7rem;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.daytabs button:hover{border-color:var(--maroon-hi)}
+.daytabs button.on{background:var(--maroon);border-color:var(--maroon-hi);box-shadow:0 10px 22px -12px rgba(168,52,44,.9)}
+.daytabs button.on small{color:rgba(255,255,255,.85)}
+
+/* ===== Day sections ===== */
+.day{margin-top:26px}
+.dayhead{display:flex;align-items:center;gap:14px;max-width:720px;margin:0 auto 16px;padding:14px 16px;border-radius:20px;background:linear-gradient(135deg,var(--maroon-lo),var(--maroon));border:1px solid rgba(255,255,255,.1)}
+.cal{flex:none;width:56px;border-radius:12px;overflow:hidden;background:#fff;color:#000;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.cal i{display:block;font:700 .6rem/1 Figtree,sans-serif;font-style:normal;letter-spacing:.14em;background:#000;color:#fff;padding:5px 0 4px;text-transform:uppercase}
+.cal b{display:block;font:800 1.7rem/1.25 Fraunces,serif;color:var(--maroon)}
+.dayhead h2{font:800 clamp(1.15rem,3.6vw,1.55rem)/1.15 Fraunces,serif;min-width:0}
+.dayhead h2 .dn{display:block;font:700 .72rem Figtree,sans-serif;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:2px}
+.dayhead .count{margin-left:auto;flex:none;font-weight:600;font-size:.78rem;background:rgba(0,0,0,.4);padding:5px 12px;border-radius:999px;white-space:nowrap}
+
+.grid{position:relative;display:grid;gap:12px;grid-template-columns:1fr;max-width:720px;margin:0 auto}
+.card{display:flex;gap:14px;align-items:center;padding:14px 16px 14px 14px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:.2s}
+.card:hover{border-color:var(--maroon-hi);transform:translateY(-2px);box-shadow:0 14px 28px -16px rgba(135,36,30,.9)}
+.num{flex:none;width:56px;height:60px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font:800 1.5rem/1 Fraunces,serif;
+ background:linear-gradient(145deg,var(--maroon-hi),var(--maroon-lo));box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.num::before{content:"ACT";font:700 .55rem/1 Figtree,sans-serif;letter-spacing:.16em;opacity:.8;margin-bottom:4px}
+.info{min-width:0}
+.title{font-weight:700;font-size:1.02rem;line-height:1.3;letter-spacing:.01em}
+.fac{display:flex;align-items:flex-start;gap:6px;color:var(--muted);font-size:.88rem;margin-top:5px}
+.fac::before{content:"";flex:none;width:16px;height:16px;margin-top:2px;background:currentColor;opacity:.7;
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5z'/%3E%3C/svg%3E") center/contain no-repeat;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5z'/%3E%3C/svg%3E") center/contain no-repeat}
+.fac span{min-width:0}
+.fac b{color:#e6a39e;font-weight:500}
+.msg{color:var(--muted);padding:18px;border:1px dashed var(--line);border-radius:16px}
+.note{color:var(--muted);text-align:center;font-size:.85rem;margin:10px 0}
+footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:44px}
+
+/* ===== Page headers (other tabs) ===== */
+.pagehead{display:flex;align-items:center;gap:14px;padding:18px;border-radius:22px;background:linear-gradient(135deg,var(--maroon-lo),var(--maroon));border:1px solid rgba(255,255,255,.1)}
+.pagehead .ic{flex:none;width:50px;height:50px;border-radius:16px;background:rgba(0,0,0,.35);display:grid;place-items:center}
+.pagehead .ic svg{width:26px;height:26px}
+.page-title{font:800 clamp(1.5rem,5vw,2.2rem)/1.1 Fraunces,serif}
+.pagehead .sub{color:rgba(243,235,233,.85);margin:0}
+
+/* ===== ID-card people ===== */
+.people{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:22px}
+.person{position:relative;text-align:center;padding:34px 20px 26px;background:linear-gradient(180deg,#1a1212,var(--card));border:1px solid var(--line);border-radius:24px;overflow:hidden;transition:.2s}
+.person::before{content:"MODERN SCHOOL";position:absolute;top:0;left:0;right:0;padding:7px 0 6px;font:700 .62rem Figtree,sans-serif;letter-spacing:.24em;color:rgba(255,255,255,.85);background:linear-gradient(135deg,var(--maroon-lo),var(--maroon))}
+.person::after{content:"";position:absolute;top:36px;left:50%;width:44px;height:7px;margin-left:-22px;border-radius:99px;background:var(--black);border:1px solid var(--line)}
 .person:hover{transform:translateY(-4px);border-color:var(--maroon-hi);box-shadow:0 18px 36px -16px rgba(135,36,30,.85)}
-.photo{width:170px;height:200px;margin:0 auto 18px;border-radius:20px;overflow:hidden;background:linear-gradient(160deg,var(--maroon),var(--maroon-lo));display:grid;place-items:end center;border:1px solid rgba(255,255,255,.1)}
+.photo{width:150px;height:180px;margin:26px auto 18px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,var(--maroon),var(--maroon-lo));display:grid;place-items:end center;border:3px solid var(--maroon);box-shadow:0 10px 24px -10px rgba(0,0,0,.8)}
 .photo img{width:100%;height:100%;object-fit:cover}
 .photo svg{width:78%;opacity:.55}
-.role{display:inline-block;font-weight:600;font-size:.9rem;color:#fff;background:var(--maroon);padding:4px 14px;border-radius:999px;margin-bottom:10px}
-.pname{font:800 1.4rem Fraunces,serif}
-.note{color:var(--muted);text-align:center;font-size:.85rem;margin-top:14px}
+.role{display:inline-block;font-weight:700;font-size:.82rem;letter-spacing:.04em;color:#fff;background:var(--maroon);padding:4px 14px;border-radius:999px;margin-bottom:10px}
+.pname{font:800 1.35rem Fraunces,serif}
 
-/* chatbot */
-.chat-fab{position:fixed;right:18px;bottom:18px;z-index:40;width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:linear-gradient(145deg,var(--maroon-hi),var(--maroon-lo));box-shadow:0 10px 30px rgba(135,36,30,.7);display:grid;place-items:center;transition:.2s}
+/* ===== Bottom tab bar ===== */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));pointer-events:none}
+.bottomnav .in{pointer-events:auto;max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px;
+ background:rgba(13,10,10,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:26px;box-shadow:0 18px 40px -8px rgba(0,0,0,.9)}
+.bottomnav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 7px;border:0;border-radius:20px;background:none;color:var(--muted);font-weight:600;font-size:.7rem;cursor:pointer;transition:.2s;min-width:0}
+.bottomnav button svg{width:22px;height:22px}
+.bottomnav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bottomnav button:hover{color:var(--text)}
+.bottomnav button[aria-selected=true]{background:var(--maroon);color:#fff;box-shadow:0 8px 18px -8px rgba(168,52,44,.9)}
+
+/* ===== Assistant widget ===== */
+.chat-fab{position:fixed;right:16px;bottom:calc(var(--nav) + 26px + env(safe-area-inset-bottom,0px));z-index:40;width:56px;height:56px;border-radius:50%;border:2px solid rgba(255,255,255,.15);cursor:pointer;color:#fff;background:linear-gradient(145deg,var(--maroon-hi),var(--maroon-lo));box-shadow:0 10px 28px rgba(135,36,30,.75);display:grid;place-items:center;transition:.2s}
 .chat-fab:hover{transform:scale(1.06)}
-.chat-fab svg{width:28px;height:28px}
-.chat{position:fixed;right:18px;bottom:90px;z-index:40;width:min(380px,calc(100vw - 36px));height:min(560px,calc(100vh - 120px));display:flex;flex-direction:column;background:var(--ink);border:1px solid var(--maroon);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.8)}
+.chat-fab svg{width:26px;height:26px}
+.chat{position:fixed;right:16px;bottom:calc(var(--nav) + 94px + env(safe-area-inset-bottom,0px));z-index:45;width:min(380px,calc(100vw - 32px));height:min(540px,calc(100vh - var(--nav) - 150px));display:flex;flex-direction:column;background:var(--ink);border:1px solid var(--maroon);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.85)}
 .chat[hidden]{display:none}
-.chat-head{padding:14px 16px;background:linear-gradient(135deg,var(--maroon-lo),var(--maroon));display:flex;justify-content:space-between;align-items:center;font:800 1.1rem Fraunces,serif}
+.chat-head{padding:14px 16px;background:linear-gradient(135deg,var(--maroon-lo),var(--maroon));display:flex;justify-content:space-between;align-items:center;font:800 1.05rem Fraunces,serif}
 .chat-head button{background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
 .msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
 .m{max-width:85%;padding:10px 13px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word;font-size:.95rem}
@@ -89,56 +138,112 @@ html{scroll-padding-top:150px}
 .chat input:focus{outline:2px solid var(--maroon-hi);border-color:transparent}
 .chat form button{border:0;border-radius:999px;background:var(--maroon);color:#fff;font:600 .95rem Figtree,sans-serif;padding:0 18px;cursor:pointer}
 .chat form button:disabled{opacity:.5}
-@media(max-width:480px){.tabs a{padding:11px 8px;font-size:.9rem}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* Chat tab sizing inside the app shell (beats chat.js defaults) */
+body .rc{margin-top:18px;border-radius:24px}
+@media(max-width:720px){
+ body .rc{height:calc(100vh - var(--bar) - var(--nav) - 190px);min-height:420px;border-radius:20px}
+}
+@media(max-width:480px){
+ .brand small{display:none}
+ .auth-pill{max-width:130px}
+ .hero .body{flex-direction:column;text-align:center;padding:24px 18px}
+ .stats{justify-content:center}
+ .dayhead .count{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="topnav"><div class="in" role="tablist">
-  <button role="tab" data-tab="modfest" aria-selected="true">Modfest 2026</button>
-  <button role="tab" data-tab="leadership" aria-selected="false">Leadership</button>
-  <button role="tab" data-tab="council" aria-selected="false">Student Council</button>
-  <button role="tab" data-tab="chat" aria-selected="false">Chat</button>
+
+<header class="appbar"><div class="in">
+  <div class="brand">
+    <div class="crest"><img src="logo.png" alt="Modern School logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'MS'}))"></div>
+    <div><b>Modern School</b><small>Modfest 2026</small></div>
+  </div>
   <a class="auth-pill" id="authPill" href="#chat" title="Account status"><i></i><span>Not signed in</span></a>
-</div></div>
+</div></header>
+
 <main class="wrap">
 <section class="panel" id="p-modfest">
-<!-- Rounded rectangle banner (replace banner.jpg) with circular logo (replace logo.png) -->
-  <header class="banner">
+  <!-- Replace banner.jpg (background) and logo.png (circular crest) in this folder -->
+  <header class="hero">
     <img src="banner.jpg" alt="" onerror="this.remove()">
-    <div class="logo">
-      <img src="logo.png" alt="Modern School logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'LOGO',style:'font:800 1.4rem Fraunces,serif;color:#87241e'}))">
+    <div class="body">
+      <div class="logo">
+        <img src="logo.png" alt="Modern School logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'LOGO',style:'font:800 1.2rem Fraunces,serif;color:#87241e'}))">
+      </div>
+      <div class="txt">
+        <span class="eyebrow">Annual Day · Modfest 2026</span>
+        <h1>Day-Wise Modfest Schedule</h1>
+        <p class="sub">Modern School · Tap a day to jump to its acts</p>
+        <div class="stats">
+          <div class="stat"><b>3</b>Days</div>
+          <div class="stat"><b id="totalActs">–</b>Acts</div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <h1>Day-Wise Modfest Schedule</h1>
-  <p class="sub">Modern School · Tap a day to jump to its acts</p>
-
-  <nav class="tabs" aria-label="Jump to day">
-    <a href="#day1">Day 1</a><a href="#day2">Day 2</a><a href="#day3">Day 3</a>
+  <nav class="daytabs" aria-label="Jump to day">
+    <button type="button" data-target="day1" class="on"><b>Day 1</b><small>Who Stole My Earth?</small></button>
+    <button type="button" data-target="day2"><b>Day 2</b><small>Harry Potter</small></button>
+    <button type="button" data-target="day3"><b>Day 3</b><small>Mera Bharat</small></button>
   </nav>
 
-  <section class="day" id="day1"><h2>Day 1</h2><div class="grid" data-csv="day1.csv"></div></section>
-  <section class="day" id="day2"><h2>Day 2</h2><div class="grid" data-csv="day2.csv"></div></section>
-  <section class="day" id="day3"><h2>Day 3</h2><div class="grid" data-csv="day3.csv"></div></section>
-
+  <section class="day" id="day1">
+    <div class="dayhead"><div class="cal"><i>Day</i><b>1</b></div>
+      <h2><span class="dn">Day 1</span> <span class="dt">Who Stole My Earth?</span></h2><span class="count"></span></div>
+    <div class="grid" data-csv="day1.csv"></div>
   </section>
+  <section class="day" id="day2">
+    <div class="dayhead"><div class="cal"><i>Day</i><b>2</b></div>
+      <h2><span class="dn">Day 2</span> <span class="dt">Harry Potter</span></h2><span class="count"></span></div>
+    <div class="grid" data-csv="day2.csv"></div>
+  </section>
+  <section class="day" id="day3">
+    <div class="dayhead"><div class="cal"><i>Day</i><b>3</b></div>
+      <h2><span class="dn">Day 3</span> <span class="dt">Mera Bharat: Chandragupta Maurya</span></h2><span class="count"></span></div>
+    <div class="grid" data-csv="day3.csv"></div>
+  </section>
+</section>
+
 <section class="panel" id="p-leadership" hidden>
-  <h1 class="page-title">Leadership</h1><p class="sub">The people guiding Modern School</p>
+  <div class="pagehead">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="m8.2 13.9-1.2 7.1 5-3 5 3-1.2-7.1"/></svg></div>
+    <div><h1 class="page-title">Leadership</h1><p class="sub">The people guiding Modern School</p></div>
+  </div>
   <div class="people" data-people="leadership"></div>
 </section>
 <section class="panel" id="p-council" hidden>
-  <h1 class="page-title">Student Council</h1><p class="sub">Your student representatives</p>
+  <div class="pagehead">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+    <div><h1 class="page-title">Student Council</h1><p class="sub">Your student representatives</p></div>
+  </div>
   <div class="people" data-people="council"></div>
 </section>
 <section class="panel" id="p-chat" hidden>
-  <h1 class="page-title">Chat</h1><p class="sub">Group room and direct messages</p>
+  <div class="pagehead">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <div><h1 class="page-title">Chat</h1><p class="sub">Group room and direct messages</p></div>
+  </div>
   <div id="chatApp"></div>
 </section>
 <footer>Modfest · Modern School</footer>
 </main>
 
-<button class="chat-fab" id="chatFab" aria-label="Open chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.9A8 8 0 1 1 21 12z"/></svg></button>
+<nav class="bottomnav" aria-label="Main"><div class="in" role="tablist">
+  <button role="tab" data-tab="modfest" aria-selected="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Modfest</span></button>
+  <button role="tab" data-tab="leadership" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="m8.2 13.9-1.2 7.1 5-3 5 3-1.2-7.1"/></svg><span>Leadership</span></button>
+  <button role="tab" data-tab="council" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span>Council</span></button>
+  <button role="tab" data-tab="chat" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Chat</span></button>
+</div></nav>
+
+<button class="chat-fab" id="chatFab" aria-label="Open assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.9A8 8 0 1 1 21 12z"/></svg></button>
 <div class="chat" id="chat" hidden role="dialog" aria-label="Modfest assistant">
   <div class="chat-head"><span>Modfest Assistant</span><button id="chatClose" aria-label="Close chat">&times;</button></div>
   <div class="msgs" id="msgs"><div class="m bot">Hi! Ask me about the Modfest schedule, acts, faculty, or Modern School.</div></div>
@@ -176,8 +281,8 @@ window.ph=i=>i.parentNode.innerHTML=SIL;
 document.querySelectorAll('[data-people]').forEach(box=>{
   box.innerHTML=PEOPLE[box.dataset.people].map(p=>`<article class="person"><div class="photo"><img src="${p.photo}" alt="${p.role}" onerror="ph(this)"></div><span class="role">${p.role}</span><div class="pname">${p.name}</div></article>`).join('');
 });
-// Tabs
-const tabs=[...document.querySelectorAll('.topnav button')];
+// Bottom tab bar
+const tabs=[...document.querySelectorAll('.bottomnav button')];
 function show(id){
   if(!['modfest','leadership','council','chat'].includes(id))id='modfest';
   tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===id));
@@ -187,9 +292,22 @@ function show(id){
 tabs.forEach(b=>b.onclick=()=>{location.hash=b.dataset.tab});
 addEventListener('hashchange',()=>show(location.hash.slice(1)));
 if(/^#(leadership|council|chat)$/.test(location.hash))show(location.hash.slice(1));
-// Day buttons (hash links would clash with tabs, so scroll manually)
-document.querySelectorAll('.tabs a').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})});
 
+// Day switcher (scrolls manually so it doesn't clash with tab hashes) + highlights the day in view
+const dayBtns=[...document.querySelectorAll('.daytabs button')];
+dayBtns.forEach(b=>b.onclick=()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth'}));
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting)dayBtns.forEach(b=>b.classList.toggle('on',b.dataset.target===e.target.id));
+  }),{rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('section.day').forEach(s=>io.observe(s));
+}
+
+const actCounts={};
+function updateTotal(){
+  const t=Object.values(actCounts).reduce((a,b)=>a+b,0);
+  document.getElementById('totalActs').textContent=t||'–';
+}
 document.querySelectorAll('[data-csv]').forEach(async box=>{
   const file=box.dataset.csv;
   try{
@@ -208,9 +326,12 @@ document.querySelectorAll('[data-csv]').forEach(async box=>{
         <div class="num" aria-label="Act ${esc((r[iN]||'').trim())}">${esc((r[iN]||'').trim())}</div>
         <div class="info">
           <div class="title">${esc((r[iT]||'').trim())}</div>
-          <div class="fac">Faculty: <b>${esc((r[iF]||'').trim())}</b></div>
+          <div class="fac"><span>Faculty: <b>${esc((r[iF]||'').trim())}</b></span></div>
         </div>
       </article>`).join('');
+    const n=rows.length;
+    box.closest('.day').querySelector('.count').textContent=n+(n===1?' act':' acts');
+    actCounts[file]=n;updateTotal();
   }catch(e){
     box.innerHTML=`<p class="msg">Couldn't load ${file}. Make sure it sits next to index.html in the repo. If you opened this file directly from your computer, use GitHub Pages or a local server (e.g. <code>python -m http.server</code>) instead.</p>`;
   }
