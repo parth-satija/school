@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function user(u) { return get(/databases/$(db)/documents/users/$(u)).data; }
+    function signedIn() { return request.auth != null && exists(/databases/$(db)/documents/users/$(request.auth.uid)); }
+    function ok() { return signedIn() && user(request.auth.uid).role != 'blocked'; }
+    function isAdmin() { return ok() && user(request.auth.uid).role == 'admin'; }
+    function validText() { return request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000; }
+
+    match /users/{u} {
+      allow read: if request.auth != null;
+      allow create: if request.auth.uid == u && request.resource.data.role == 'student';
+      // Users can edit their profile but never their own role. Set staff/admin roles in the Firebase console.
+      allow update: if request.auth.uid == u && request.resource.data.role == resource.data.role
+        && (!('title' in request.resource.data)
+            || (request.resource.data.title is string && request.resource.data.title.size() <= 40));
+    }
+
+    // Group room: any signed-in, non-blocked user can read and post. Admins can delete.
+    match /room/{m} {
+      allow read: if ok();
+      allow create: if ok() && validText()
+        && request.resource.data.keys().hasOnly(['from','name','text','createdAt'])
+        && request.resource.data.from == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    // Direct messages: chat id is the two user ids, sorted and joined with "_".
+    // Students may only message staff or admins. Staff and admins may message anyone.
+    match /dms/{c}/messages/{m} {
+      allow read: if ok() && request.auth.uid in c.split('_');
+      allow create: if ok() && validText()
+        && request.resource.data.keys().hasOnly(['from','to','name','text','createdAt'])
+        && request.resource.data.from == request.auth.uid
+        && request.resource.data.to != request.auth.uid
+        && c == (request.auth.uid < request.resource.data.to
+                 ? request.auth.uid + '_' + request.resource.data.to
+                 : request.resource.data.to + '_' + request.auth.uid)
+        && request.resource.data.createdAt == request.time
+        && (user(request.auth.uid).role != 'student'
+            || user(request.resource.data.to).role in ['staff','admin']);
+    }
+  }
+}

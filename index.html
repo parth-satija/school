@@ -92,6 +92,7 @@ html{scroll-padding-top:150px}
   <button role="tab" data-tab="modfest" aria-selected="true">Modfest 2026</button>
   <button role="tab" data-tab="leadership" aria-selected="false">Leadership</button>
   <button role="tab" data-tab="council" aria-selected="false">Student Council</button>
+  <button role="tab" data-tab="chat" aria-selected="false">Chat</button>
 </div></div>
 <main class="wrap">
 <section class="panel" id="p-modfest">
@@ -123,6 +124,10 @@ html{scroll-padding-top:150px}
   <h1 class="page-title">Student Council</h1><p class="sub">Your student representatives</p>
   <div class="people" data-people="council"></div>
 </section>
+<section class="panel" id="p-chat" hidden>
+  <h1 class="page-title">Chat</h1><p class="sub">Group room and direct messages</p>
+  <div id="chatApp"></div>
+</section>
 <footer>Modfest · Modern School</footer>
 </main>
 
@@ -133,6 +138,7 @@ html{scroll-padding-top:150px}
   <form id="chatForm"><input id="chatIn" placeholder="Type your question" autocomplete="off" required><button id="chatSend">Send</button></form>
 </div>
 <script>
+// @ts-nocheck
 // Minimal CSV parser (handles quoted fields, commas and newlines inside quotes)
 function parseCSV(t){
   const rows=[];let row=[],f='',q=false;
@@ -166,14 +172,14 @@ document.querySelectorAll('[data-people]').forEach(box=>{
 // Tabs
 const tabs=[...document.querySelectorAll('.topnav button')];
 function show(id){
-  if(!['modfest','leadership','council'].includes(id))id='modfest';
+  if(!['modfest','leadership','council','chat'].includes(id))id='modfest';
   tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='p-'+id);
   window.scrollTo(0,0);
 }
 tabs.forEach(b=>b.onclick=()=>{location.hash=b.dataset.tab});
 addEventListener('hashchange',()=>show(location.hash.slice(1)));
-if(/^#(leadership|council)$/.test(location.hash))show(location.hash.slice(1));
+if(/^#(leadership|council|chat)$/.test(location.hash))show(location.hash.slice(1));
 // Day buttons (hash links would clash with tabs, so scroll manually)
 document.querySelectorAll('.tabs a').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})});
 
@@ -237,5 +243,6 @@ document.getElementById('chatForm').onsubmit=async e=>{
   chatSend.disabled=false;msgs.scrollTop=msgs.scrollHeight;chatIn.focus();
 };
 </script>
+<script type="module" src="chat.js"></script>
 </body>
 </html>
